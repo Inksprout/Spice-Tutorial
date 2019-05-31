@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Category>
+@*you need to tell the view what type of data it will render with, in this case a list (Ienumerable) of Category objects*@
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br /> <br />
+<div class="border backgroundWhite">
+    <div class="row">
+        <div class="col-6">
+            <h2 class="text-info"> Category List</h2>
+        </div>
+        <div class="col-6 text-right">
+            <partial name="_CreateButtonPartial" />
+        </div>
+        <br />
+        <div>
+            @if (Model.Count() > 0)
+            {
+                <table class="table table-striped border">
+                    <tr class="table-secondary">
+                        <th>
+                            @Html.DisplayNameFor(mbox => mbox.Name)
+                        </th>
+
+                        @foreach (var item in Model)
+                        {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(m => item.Name)
+                            </td>
+                            <td>
+                                EDIT | DELETE | DETAILS
+                            </td>
+                        </tr>
+
+                    }
+                    </table>
+                }
+                else
+                {
+                    <p>Not categories exists</p>
+                }
+        </div>
+    </div>
+</div>
