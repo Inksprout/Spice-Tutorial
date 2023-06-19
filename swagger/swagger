@@ -1,0 +1,210 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "pactflow saas API",
+    "description" : "The API for Pactflow Saas",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "https://virtserver.swaggerhub.com/candy.goodison/PactsForVerification/1.0.0",
+    "description" : "SwaggerHub API Auto Mocking"
+  } ],
+  "paths" : {
+    "/pacts/provider/{provider}/for-verification" : {
+      "post" : {
+        "description" : "returns pacts for verififcation for this provider and the consumer selectors given in the body of the request",
+        "parameters" : [ {
+          "name" : "provider",
+          "in" : "path",
+          "description" : "Provider to get pacts for",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "number"
+          }
+        } ],
+        "requestBody" : {
+          "description" : "Body specifies additional parameters to use when selecting the pacts for verification",
+          "content" : {
+            "application/hal+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PactSelectors"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "pacts for verification",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "SelfLink" : {
+        "required" : [ "self" ],
+        "type" : "object",
+        "properties" : {
+          "self" : {
+            "$ref" : "#/components/schemas/SelfLink_self"
+          }
+        }
+      },
+      "PactForVerification" : {
+        "required" : [ "verificationProperties" ],
+        "type" : "object",
+        "properties" : {
+          "verificationProperties" : {
+            "$ref" : "#/components/schemas/PactForVerification_verificationProperties"
+          },
+          "links" : {
+            "$ref" : "#/components/schemas/SelfLink"
+          }
+        }
+      },
+      "PactSelectors" : {
+        "type" : "object",
+        "properties" : {
+          "consumerVersionSelectors" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ConsumerVersionSelector"
+            }
+          },
+          "providerVersionBranch" : {
+            "type" : "string"
+          },
+          "includePendingStatus" : {
+            "type" : "boolean"
+          },
+          "includeWipPactsSince" : {
+            "type" : "string",
+            "format" : "date"
+          }
+        },
+        "additionalProperties" : false
+      },
+      "ConsumerVersionSelector" : {
+        "type" : "object",
+        "properties" : {
+          "mainBranch" : {
+            "type" : "boolean",
+            "enum" : [ true ]
+          },
+          "branch" : {
+            "type" : "string"
+          },
+          "matchingBranch" : {
+            "type" : "boolean",
+            "enum" : [ true ]
+          },
+          "fallbackBranch" : {
+            "type" : "string"
+          },
+          "deployed" : {
+            "type" : "boolean",
+            "enum" : [ true ]
+          },
+          "released" : {
+            "type" : "boolean",
+            "enum" : [ true ]
+          },
+          "deployedOrReleased" : {
+            "type" : "boolean",
+            "enum" : [ true ]
+          },
+          "environment" : {
+            "type" : "string"
+          },
+          "latest" : {
+            "type" : "boolean",
+            "enum" : [ true ]
+          },
+          "consumer" : {
+            "type" : "string"
+          },
+          "tag" : {
+            "type" : "string"
+          },
+          "fallbackTag" : {
+            "type" : "string"
+          }
+        }
+      },
+      "inline_response_200" : {
+        "required" : [ "_embedded", "_links" ],
+        "type" : "object",
+        "properties" : {
+          "_embedded" : {
+            "$ref" : "#/components/schemas/inline_response_200__embedded"
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/SelfLink"
+          }
+        }
+      },
+      "SelfLink_self" : {
+        "required" : [ "href", "title" ],
+        "type" : "object",
+        "properties" : {
+          "href" : {
+            "type" : "string"
+          },
+          "title" : {
+            "type" : "string"
+          }
+        }
+      },
+      "PactForVerification_verificationProperties_notices" : {
+        "required" : [ "text", "when" ],
+        "type" : "object",
+        "properties" : {
+          "text" : {
+            "type" : "string"
+          },
+          "when" : {
+            "type" : "string"
+          }
+        }
+      },
+      "PactForVerification_verificationProperties" : {
+        "required" : [ "notices" ],
+        "type" : "object",
+        "properties" : {
+          "notices" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/PactForVerification_verificationProperties_notices"
+            }
+          },
+          "pending" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "inline_response_200__embedded" : {
+        "required" : [ "pacts" ],
+        "type" : "object",
+        "properties" : {
+          "pacts" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/PactForVerification"
+            }
+          }
+        }
+      }
+    }
+  }
+}
